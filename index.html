@@ -1,21 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Share Example with Fallback</title>
+  </head>
+  <body>
+    <button id="shareButton">Share</button>
 
+    <div id="fallbackContainer" style="display: none">
+      <p>Share this page:</p>
+      <a
+        href="https://www.facebook.com/sharer/sharer.php?u=<URL>"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Share on Facebook
+      </a>
+      <a
+        href="https://twitter.com/intent/tweet?url=<URL>&text=<TEXT>"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Share on Twitter
+      </a>
+      <!-- Add more social media sharing links as needed -->
+    </div>
 
+    <script>
+      const shareButton = document.getElementById("shareButton");
+      const fallbackContainer = document.getElementById("fallbackContainer");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      shareButton.addEventListener("click", () => {
+        if (navigator.share) {
+          // Use Web Share API if supported
+          navigator
+            .share({
+              title: "Share Example",
+              text: "Check out this awesome content!",
+              url: window.location.href,
+            })
+            .catch((error) => {
+              console.error("Error sharing:", error);
+              // If sharing fails, show fallback options
+              fallbackContainer.style.display = "block";
+            });
+        } else {
+          // Web Share API is not supported, show fallback options
+          fallbackContainer.style.display = "block";
+        }
+      });
+    </script>
+  </body>
+</html>
